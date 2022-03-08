@@ -25,7 +25,7 @@ class ShapePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // with offset
     var paint = Paint()
-      ..color = Colors.teal
+      ..color = Colors.pink
       ..strokeWidth = 5
       ..strokeCap = StrokeCap.round;
 
@@ -37,7 +37,7 @@ class ShapePainter extends CustomPainter {
     // with path
     /*
      var paint = Paint()
-      ..color = Colors.teal
+      ..color = Colors.pink
       ..strokeWidth = 5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
