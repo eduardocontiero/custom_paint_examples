@@ -3,25 +3,50 @@ import 'dart:math' as math;
 
 import '../widgets/drawer_widget.dart';
 
-class PolygonPage extends StatefulWidget {
-  const PolygonPage({Key? key}) : super(key: key);
+class PolygonAnimatedPage extends StatefulWidget {
+  const PolygonAnimatedPage({Key? key}) : super(key: key);
 
   @override
-  State<PolygonPage> createState() => _PolygonPageState();
+  State<PolygonAnimatedPage> createState() => _PolygonPageState();
 }
 
-class _PolygonPageState extends State<PolygonPage>{
+class _PolygonPageState extends State<PolygonAnimatedPage> with TickerProviderStateMixin {
   var _sides = 3.0;
   var _radius = 100.0;
   var _radians = 0.0;
+  late Animation<double> animation;
+  late AnimationController controller;
+  Tween<double> _rotationTween = Tween(begin: -math.pi, end: math.pi);
 
-  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   controller = AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 4),
+  );
+
+  animation = _rotationTween.animate(controller)
+    ..addListener(() {
+      setState(() {});
+    })
+    ..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.repeat();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+      }
+    });
+
+  controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Polygons'),
+        title: const Text('Polygons'),
       ),
       drawer: DrawerWidget(),
       body: SafeArea(
@@ -30,7 +55,7 @@ class _PolygonPageState extends State<PolygonPage>{
           children: [
             Expanded(
               child: CustomPaint(
-                painter: ShapePainter(_sides, _radius, _radians),
+                painter: ShapePainter(_sides, _radius, animation.value),
                 child: Container(),
               ),
             ),
@@ -64,20 +89,7 @@ class _PolygonPageState extends State<PolygonPage>{
                 });
               },
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 16.0),
-              child: Text('Rotation'),
-            ),
-            Slider(
-              value: _radians,
-              min: 0.0,
-              max: math.pi,
-              onChanged: (value) {
-                setState(() {
-                  _radians = value;
-                });
-              },
-            ),
+           
           ],
         ),
       ),
@@ -121,6 +133,6 @@ class ShapePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }

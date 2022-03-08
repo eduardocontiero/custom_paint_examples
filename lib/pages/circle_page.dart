@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/drawer_widget.dart';
+
 class CirclePage extends StatelessWidget {
   const CirclePage({Key? key}) : super(key: key);
 
@@ -9,6 +11,7 @@ class CirclePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Circle"),
       ),
+      drawer: DrawerWidget(),
       body: CustomPaint(
         painter: ShapePainter(),
         child: Container(),
@@ -22,7 +25,7 @@ class ShapePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // with offset
     var paint = Paint()
-      ..color = Colors.teal 
+      ..color = Colors.teal
       ..strokeWidth = 5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -46,12 +49,10 @@ class ShapePainter extends CustomPainter {
     ));
     canvas.drawPath(path, paint);
     */
-    
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
-
 }

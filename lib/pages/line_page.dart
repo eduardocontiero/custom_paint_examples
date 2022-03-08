@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/drawer_widget.dart';
+
 class LinePage extends StatelessWidget {
   const LinePage({Key? key}) : super(key: key);
 
@@ -7,8 +9,9 @@ class LinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lines"),
+        title: const Text("Lines"),
       ),
+      drawer: DrawerWidget(),
       body: CustomPaint(
         painter: ShapePainter(),
         child: Container(),
@@ -17,20 +20,19 @@ class LinePage extends StatelessWidget {
   }
 }
 
-
 class ShapePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // with offset
-    var paint = Paint() 
+    var paint = Paint()
       ..color = Colors.teal
       ..strokeWidth = 5
       ..strokeCap = StrokeCap.round;
 
-      Offset startingPoint = Offset(0, size.height / 2);
-      Offset endingPoint = Offset(size.width, size.height / 2);
+    Offset startingPoint = Offset(0, size.height / 2);
+    Offset endingPoint = Offset(size.width, size.height / 2);
 
-      canvas.drawLine(startingPoint, endingPoint, paint);
+    canvas.drawLine(startingPoint, endingPoint, paint);
 
     // with path
     /*
@@ -45,13 +47,10 @@ class ShapePainter extends CustomPainter {
     path.lineTo(size.width, size.height / 2);
     canvas.drawPath(path, paint);
     */
-
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    
     return false;
   }
-
 }

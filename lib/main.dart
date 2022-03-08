@@ -2,6 +2,7 @@ import 'package:custom_animate_custom_paint/pages/line_page.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/circle_page.dart';
+import 'pages/polygon_animated_page.dart';
 import 'pages/polygon_page.dart';
 
 void main() {
@@ -15,10 +16,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Custom Animate',
-        theme: ThemeData(
-          primarySwatch: Colors.pink,
-        ),
-        home: PolygonPage());
+      title: 'Flutter Custom Animate',
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      initialRoute: '/line',
+      routes: {
+        '/line': (context) => const LinePage(),
+        '/circle': (context) => const CirclePage(),
+        '/polygon': (context) => const PolygonPage(),
+        '/polygon-animated': (context) => const PolygonAnimatedPage(),
+      },
+    );
   }
 }
