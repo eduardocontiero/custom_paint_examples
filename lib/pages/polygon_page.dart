@@ -8,10 +8,37 @@ class PolygonPage extends StatefulWidget {
   State<PolygonPage> createState() => _PolygonPageState();
 }
 
-class _PolygonPageState extends State<PolygonPage> {
+class _PolygonPageState extends State<PolygonPage> with TickerProviderStateMixin {
   var _sides = 3.0;
   var _radius = 100.0;
   var _radians = 0.0;
+  late Animation<double> animation;
+  late AnimationController controller;
+  Tween<double> _rotationTween = Tween(begin: -math.pi, end: math.pi);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   controller = AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 4),
+  );
+
+  animation = _rotationTween.animate(controller)
+    ..addListener(() {
+      setState(() {});
+    })
+    ..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.repeat();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+      }
+    });
+
+  controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +52,7 @@ class _PolygonPageState extends State<PolygonPage> {
           children: [
             Expanded(
               child: CustomPaint(
-                painter: ShapePainter(_sides, _radius, _radians),
+                painter: ShapePainter(_sides, _radius, animation.value),
                 child: Container(),
               ),
             ),
@@ -89,14 +116,14 @@ class ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint() 
+    var paint = Paint()
       ..color = Colors.teal
       ..strokeWidth = 5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     var path = Path();
-    
+
     var angle = (math.pi * 2) / sides;
 
     Offset center = Offset(size.width / 2, size.height / 2);
@@ -116,6 +143,6 @@ class ShapePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }
